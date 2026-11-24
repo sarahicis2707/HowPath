@@ -1,0 +1,11 @@
+.howpath-test {
+	max-width: 640px;
+	margin: 2rem auto;
+	padding: 1.5rem 2rem;
+	border: 2px solid #1a1a1a;
+	border-radius: 12px;
+	font-family: inherit;
+}
+.howpath-test h2 {
+	margin: 0 0 .5rem;
+}
