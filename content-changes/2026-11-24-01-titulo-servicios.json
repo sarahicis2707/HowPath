@@ -1,0 +1,11 @@
+{
+  "page_id": 23,
+  "description": "Corrige el título de la sección de servicios: \"Uns sistema conectado\" pasa a \"Un sistema conectado\".",
+  "replacements": [
+    {
+      "find": "\"text\":\"Uns sistema conectado\"",
+      "replace": "\"text\":\"Un sistema conectado\"",
+      "count": 1
+    }
+  ]
+}
