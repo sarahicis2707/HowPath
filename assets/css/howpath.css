@@ -32,7 +32,13 @@
 	overflow: hidden;
 }
 
-/* Ocupa todo el ancho aunque el tema use un contenedor más angosto */
+/* Ocupa todo el ancho aunque el tema use un contenedor más angosto.
+   overflow-x: clip evita la barra horizontal que causa el ancho de la barra de desplazamiento. */
+html:has(.hp-home--bleed),
+body:has(.hp-home--bleed) {
+	overflow-x: clip;
+}
+
 .hp-home.hp-home--bleed {
 	width: 100vw;
 	max-width: 100vw;
@@ -70,8 +76,11 @@
 	letter-spacing: -0.025em;
 }
 
-.hp-home a {
-	text-decoration: none;
+.hp-home a,
+.hp-home a:hover,
+.hp-home a:focus,
+.hp-home a:visited {
+	text-decoration: none !important;
 }
 
 .hp-home .hp-icon {

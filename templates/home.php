@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $hp_contacto = home_url( '/contact/' );
 ?>
-<div class="hp-home">
+<div class="hp-home hp-home--bleed">
 
 	<!-- PORTADA -->
 	<section class="hp-hero hp-grid-bg">
