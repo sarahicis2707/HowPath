@@ -1,0 +1,6 @@
+{
+  "page_id": 23,
+  "description": "Publica el nuevo diseño de inicio: la página 23 pasa a mostrar el shortcode [howpath_home]. La versión anterior con Spectra queda en las revisiones de WordPress.",
+  "expect_sha256": "2417189f828e39d9ae95fdc51578da73dbaa46a3ac46be1f65f20f520f1007eb",
+  "set_content": "<!-- wp:shortcode -->\n[howpath_home]\n<!-- /wp:shortcode -->"
+}
