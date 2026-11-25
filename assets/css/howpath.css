@@ -562,7 +562,7 @@
 }
 
 .hp-home .hp-float--top { top: -46px; left: -24px; }
-.hp-home .hp-float--bottom { right: -24px; bottom: -22px; animation-duration: 5s; animation-delay: 2s; }
+.hp-home .hp-float--bottom { right: -24px; bottom: -44px; animation-duration: 5s; animation-delay: 2s; }
 
 .hp-home .hp-float__icon {
 	display: grid;
