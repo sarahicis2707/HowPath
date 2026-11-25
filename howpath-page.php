@@ -2,7 +2,7 @@
 /**
  * Plugin Name: HowPath Page
  * Description: Aplica a las páginas de HowPath los cambios de contenido guardados en GitHub (carpeta content-changes) y muestra el shortcode [howpath_home].
- * Version: 0.2.0
+ * Version: 0.3.0
  * Author: HowPath
  */
 
@@ -13,6 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'HOWPATH_CHANGES_DIR', plugin_dir_path( __FILE__ ) . 'content-changes/' );
 define( 'HOWPATH_CHANGES_LOG', 'howpath_content_changes' );
 define( 'HOWPATH_CHANGES_LOCK', 'howpath_content_changes_lock' );
+define( 'HOWPATH_HOME_PAGE_ID', 23 );
+
+require_once plugin_dir_path( __FILE__ ) . 'includes/icons.php';
 
 /*
  * Cambios de contenido
@@ -26,6 +29,10 @@ define( 'HOWPATH_CHANGES_LOCK', 'howpath_content_changes_lock' );
  *     { "find": "texto actual", "replace": "texto nuevo", "count": 1 }
  *   ]
  * }
+ *
+ * Para reemplazar todo el contenido de la página se usa "set_content" junto con
+ * "expect_sha256": el contenido solo se sustituye si el actual coincide con esa
+ * huella, así no se pisa una edición hecha después desde WordPress.
  *
  * Cada archivo se aplica una sola vez, en orden alfabético. Antes de cambiar
  * nada se comprueba que cada texto a buscar aparezca exactamente "count" veces
@@ -87,7 +94,10 @@ function howpath_change_result( $status, $message, $page_id = 0 ) {
 function howpath_apply_change_file( $file ) {
 	$data = json_decode( (string) file_get_contents( $file ), true );
 
-	if ( ! is_array( $data ) || empty( $data['page_id'] ) || empty( $data['replacements'] ) || ! is_array( $data['replacements'] ) ) {
+	$has_replacements = ! empty( $data['replacements'] ) && is_array( $data['replacements'] );
+	$has_set_content  = isset( $data['set_content'] ) && is_string( $data['set_content'] );
+
+	if ( ! is_array( $data ) || empty( $data['page_id'] ) || ( ! $has_replacements && ! $has_set_content ) ) {
 		return howpath_change_result( 'error', 'El archivo no tiene el formato esperado.' );
 	}
 
@@ -99,7 +109,14 @@ function howpath_apply_change_file( $file ) {
 
 	$content = $post->post_content;
 
-	foreach ( array_values( $data['replacements'] ) as $i => $item ) {
+	if ( $has_set_content ) {
+		if ( empty( $data['expect_sha256'] ) || ! hash_equals( (string) $data['expect_sha256'], hash( 'sha256', $content ) ) ) {
+			return howpath_change_result( 'error', 'El contenido actual de la página no es el esperado (alguien la editó). No se cambió nada.', $page_id );
+		}
+		$content = $data['set_content'];
+	}
+
+	foreach ( ( $has_replacements ? array_values( $data['replacements'] ) : array() ) as $i => $item ) {
 		if ( ! is_array( $item ) || ! isset( $item['find'], $item['replace'] ) || '' === $item['find'] ) {
 			return howpath_change_result( 'error', sprintf( 'El reemplazo %d está incompleto.', $i + 1 ), $page_id );
 		}
@@ -167,13 +184,44 @@ add_action( 'admin_notices', 'howpath_content_changes_notice' );
 function howpath_register_assets() {
 	$css_path = plugin_dir_path( __FILE__ ) . 'assets/css/howpath.css';
 	wp_register_style(
+		'howpath-fonts',
+		'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap',
+		array(),
+		null
+	);
+	wp_register_style(
 		'howpath-page',
 		plugins_url( 'assets/css/howpath.css', __FILE__ ),
-		array(),
-		file_exists( $css_path ) ? filemtime( $css_path ) : '0.2.0'
+		array( 'howpath-fonts' ),
+		file_exists( $css_path ) ? filemtime( $css_path ) : '0.3.0'
 	);
+
+	if ( howpath_page_uses_home() ) {
+		wp_enqueue_style( 'howpath-page' );
+	}
 }
 add_action( 'wp_enqueue_scripts', 'howpath_register_assets' );
+
+// Vista previa solo para quien puede editar páginas: añade ?hp_preview=1 a la portada.
+function howpath_is_preview() {
+	return isset( $_GET['hp_preview'] ) && is_page( HOWPATH_HOME_PAGE_ID ) && current_user_can( 'edit_pages' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+}
+
+function howpath_page_uses_home() {
+	if ( ! is_singular() ) {
+		return false;
+	}
+	$post = get_post();
+	return howpath_is_preview() || ( $post && has_shortcode( $post->post_content, 'howpath_home' ) );
+}
+
+function howpath_preview_content( $content ) {
+	if ( howpath_is_preview() && in_the_loop() && is_main_query() ) {
+		return '[howpath_home]';
+	}
+	return $content;
+}
+add_filter( 'the_content', 'howpath_preview_content', 1 );
 
 function howpath_home_shortcode() {
 	wp_enqueue_style( 'howpath-page' );
