@@ -8,7 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$hp_contacto = home_url( '/contact/' );
+$hp_contacto  = home_url( '/contact/' );
+$hp_servicios = home_url( '/services/' );
 ?>
 <div class="hp-home hp-home--bleed">
 
@@ -137,9 +138,9 @@ $hp_contacto = home_url( '/contact/' );
 
 			<div class="hp-services">
 
-				<article class="hp-card">
+				<a class="hp-card hp-card--link" href="<?php echo esc_url( $hp_servicios . '#strategy' ); ?>">
 					<div class="hp-card__top">
-						<span class="hp-card__num">01</span>
+						<span class="hp-card__num">1</span>
 						<span class="hp-card__icon"><?php echo howpath_icon( 'route' ); ?></span>
 					</div>
 					<h3 class="hp-card__title">Strategy</h3>
@@ -149,11 +150,11 @@ $hp_contacto = home_url( '/contact/' );
 						<span>Diagnóstico</span><?php echo howpath_icon( 'arrow-right' ); ?><span>KPIs</span><?php echo howpath_icon( 'arrow-right' ); ?><span class="is-accent">Roadmap</span>
 					</div>
 					<div class="hp-tags"><span>Diagnóstico</span><span>KPIs</span><span>Customer journey</span><span>Roadmap</span></div>
-				</article>
+				</a>
 
-				<article class="hp-card">
+				<a class="hp-card hp-card--link" href="<?php echo esc_url( $hp_servicios . '#stack' ); ?>">
 					<div class="hp-card__top">
-						<span class="hp-card__num">02</span>
+						<span class="hp-card__num">2</span>
 						<span class="hp-card__icon"><?php echo howpath_icon( 'layers' ); ?></span>
 					</div>
 					<h3 class="hp-card__title">Stack</h3>
@@ -163,11 +164,11 @@ $hp_contacto = home_url( '/contact/' );
 						<span>CRM</span><?php echo howpath_icon( 'link' ); ?><span>Flujos</span><?php echo howpath_icon( 'link' ); ?><span>Datos</span>
 					</div>
 					<div class="hp-tags"><span>CRM</span><span>Automatización</span><span>Integraciones</span><span>Tracking</span></div>
-				</article>
+				</a>
 
-				<article class="hp-card">
+				<a class="hp-card hp-card--link" href="<?php echo esc_url( $hp_servicios . '#growth' ); ?>">
 					<div class="hp-card__top">
-						<span class="hp-card__num">03</span>
+						<span class="hp-card__num">3</span>
 						<span class="hp-card__icon"><?php echo howpath_icon( 'chart-line' ); ?></span>
 					</div>
 					<h3 class="hp-card__title">Growth</h3>
@@ -177,11 +178,11 @@ $hp_contacto = home_url( '/contact/' );
 						<span>Tráfico calificado</span><?php echo howpath_icon( 'arrow-right' ); ?><span class="is-accent">Oportunidades</span>
 					</div>
 					<div class="hp-tags"><span>Paid media</span><span>Funnels B2B</span><span>CRO</span><span>Pruebas A/B</span></div>
-				</article>
+				</a>
 
-				<article class="hp-card">
+				<a class="hp-card hp-card--link" href="<?php echo esc_url( $hp_servicios . '#intelligence' ); ?>">
 					<div class="hp-card__top">
-						<span class="hp-card__num">04</span>
+						<span class="hp-card__num">4</span>
 						<span class="hp-card__icon"><?php echo howpath_icon( 'pie' ); ?></span>
 					</div>
 					<h3 class="hp-card__title">Intelligence</h3>
@@ -192,11 +193,11 @@ $hp_contacto = home_url( '/contact/' );
 						<span>Tablero para dirección</span>
 					</div>
 					<div class="hp-tags"><span>Dashboards</span><span>Atribución</span><span>KPIs</span><span>Reportes</span></div>
-				</article>
+				</a>
 
-				<article class="hp-card">
+				<a class="hp-card hp-card--link" href="<?php echo esc_url( $hp_servicios . '#studio' ); ?>">
 					<div class="hp-card__top">
-						<span class="hp-card__num">05</span>
+						<span class="hp-card__num">5</span>
 						<span class="hp-card__icon"><?php echo howpath_icon( 'sparkles' ); ?></span>
 					</div>
 					<h3 class="hp-card__title">Studio</h3>
@@ -206,7 +207,7 @@ $hp_contacto = home_url( '/contact/' );
 						<span>Concepto y copy</span><span class="hp-mini__badge">Orientado a conversión</span>
 					</div>
 					<div class="hp-tags"><span>Creativos</span><span>Video</span><span>Copywriting</span><span>Landing pages</span></div>
-				</article>
+				</a>
 
 				<article class="hp-card hp-card--cta">
 					<span class="hp-card__bg-icon" aria-hidden="true"><?php echo howpath_icon( 'trend-up' ); ?></span>
