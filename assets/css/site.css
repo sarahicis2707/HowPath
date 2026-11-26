@@ -31,6 +31,7 @@
 	padding-right: var(--hp-gutter);
 }
 
-.site-footer .ast-builder-grid-row {
-	max-width: var(--hp-max);
+.site-footer .ast-builder-grid-row-container .ast-builder-grid-row,
+.site-footer .site-primary-footer-wrap .site-primary-footer-inner-wrap {
+	max-width: var(--hp-max) !important;
 }
