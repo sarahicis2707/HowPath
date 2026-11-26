@@ -1,0 +1,36 @@
+/* =========================================================
+   HowPath — Ajustes de todo el sitio
+   El encabezado y el pie de Astra usan el mismo ancho y los mismos
+   márgenes laterales que la página de inicio (assets/css/howpath.css).
+   ========================================================= */
+
+:root {
+	--hp-max: 1760px;
+	--hp-gutter: clamp(20px, 4vw, 80px);
+}
+
+/* Encabezado de escritorio */
+#ast-desktop-header .main-header-bar {
+	padding-left: var(--hp-gutter);
+	padding-right: var(--hp-gutter);
+}
+
+#ast-desktop-header .site-primary-header-wrap,
+#ast-desktop-header .site-above-header-wrap,
+#ast-desktop-header .site-below-header-wrap {
+	max-width: var(--hp-max);
+	padding-left: 0;
+	padding-right: 0;
+}
+
+/* Pie de página */
+.site-footer .site-primary-footer-wrap,
+.site-footer .site-above-footer-wrap,
+.site-footer .site-below-footer-wrap {
+	padding-left: var(--hp-gutter);
+	padding-right: var(--hp-gutter);
+}
+
+.site-footer .ast-builder-grid-row {
+	max-width: var(--hp-max);
+}

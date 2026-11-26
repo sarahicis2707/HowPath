@@ -2,7 +2,7 @@
 /**
  * Plugin Name: HowPath Page
  * Description: Aplica a las páginas de HowPath los cambios de contenido guardados en GitHub (carpeta content-changes) y muestra el shortcode [howpath_home].
- * Version: 0.3.0
+ * Version: 0.4.0
  * Author: HowPath
  */
 
@@ -194,6 +194,14 @@ function howpath_register_assets() {
 		plugins_url( 'assets/css/howpath.css', __FILE__ ),
 		array( 'howpath-fonts' ),
 		file_exists( $css_path ) ? filemtime( $css_path ) : '0.3.0'
+	);
+
+	$site_css = plugin_dir_path( __FILE__ ) . 'assets/css/site.css';
+	wp_enqueue_style(
+		'howpath-site',
+		plugins_url( 'assets/css/site.css', __FILE__ ),
+		array(),
+		file_exists( $site_css ) ? filemtime( $site_css ) : '0.4.0'
 	);
 
 	if ( howpath_page_uses_home() ) {

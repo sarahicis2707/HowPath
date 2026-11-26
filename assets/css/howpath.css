@@ -20,6 +20,9 @@
 	--hp-muted: #94A3B8;
 	--hp-display: "Space Grotesk", Inter, system-ui, sans-serif;
 	--hp-body: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+	/* Mismo ancho y márgenes que el encabezado y el pie (assets/css/site.css) */
+	--hp-max: 1760px;
+	--hp-gutter: clamp(20px, 4vw, 80px);
 
 	position: relative;
 	width: 100%;
@@ -93,9 +96,9 @@ body:has(.hp-home--bleed) {
 
 .hp-home .hp-wrap {
 	width: 100%;
-	max-width: 1280px;
+	max-width: calc(var(--hp-max) + 2 * var(--hp-gutter));
 	margin-inline: auto;
-	padding-inline: clamp(20px, 4vw, 32px);
+	padding-inline: var(--hp-gutter);
 }
 
 .hp-home .is-accent {
@@ -300,16 +303,16 @@ body:has(.hp-home--bleed) {
 
 .hp-home .hp-hero__title {
 	margin-top: 24px;
-	font-size: clamp(38px, 5vw, 62px);
-	line-height: 1.08;
+	font-size: clamp(38px, 4.4vw, 84px);
+	line-height: 1.06;
 	letter-spacing: -0.035em;
 }
 
 .hp-home .hp-hero__lead {
-	max-width: 620px;
+	max-width: 720px;
 	margin-top: 24px;
 	color: var(--hp-text);
-	font-size: clamp(17px, 1.5vw, 20px);
+	font-size: clamp(17px, 1.25vw, 22px);
 	line-height: 1.6;
 }
 
@@ -345,7 +348,7 @@ body:has(.hp-home--bleed) {
 .hp-home .hp-hero__visual {
 	position: relative;
 	width: 100%;
-	max-width: 600px;
+	max-width: 780px;
 	justify-self: end;
 }
 
@@ -492,11 +495,21 @@ body:has(.hp-home--bleed) {
 	overflow: visible;
 }
 
+/* Flecha de crecimiento: se dibuja de izquierda a derecha, se queda un momento
+   y vuelve a empezar. Los puntos aparecen cuando la línea los alcanza. Ciclo de 9 s. */
 .hp-home .hp-chart__line {
-	stroke-dasharray: 1200;
-	stroke-dashoffset: 1200;
-	animation: hp-draw 3s cubic-bezier(0.16, 1, 0.3, 1) .3s forwards;
+	stroke-dasharray: 1;
+	stroke-dashoffset: 1;
+	filter: drop-shadow(0 0 4px rgba(255, 91, 46, 0.35));
+	animation: hp-line 9s linear infinite;
 }
+
+.hp-home .hp-chart__area { animation: hp-area 9s ease-in-out infinite; }
+.hp-home .hp-chart__dot { opacity: 0; }
+.hp-home .hp-chart__dot--1 { animation: hp-dot-1 9s ease-out infinite; }
+.hp-home .hp-chart__dot--2 { animation: hp-dot-2 9s ease-out infinite; }
+.hp-home .hp-chart__dot--3 { animation: hp-dot-3 9s ease-out infinite; }
+.hp-home .hp-chart__peak { animation: hp-peak 9s ease-out infinite; }
 
 .hp-home .hp-chart__pulse {
 	transform-box: fill-box;
@@ -1245,8 +1258,44 @@ body:has(.hp-home--bleed) {
    ANIMACIONES
    ========================================================= */
 
-@keyframes hp-draw {
-	to { stroke-dashoffset: 0; }
+/* La línea avanza entre el 6 % y el 56 % del ciclo; los puntos están
+   al 13 %, 36 % y 59 % del recorrido de la línea. */
+@keyframes hp-line {
+	0% { stroke-dashoffset: 1; opacity: 0; animation-timing-function: linear; }
+	6% { stroke-dashoffset: 1; opacity: 1; }
+	56% { stroke-dashoffset: 0; opacity: 1; }
+	86% { stroke-dashoffset: 0; opacity: 1; }
+	96%, 100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+@keyframes hp-area {
+	0%, 40% { opacity: 0; }
+	62%, 86% { opacity: 1; }
+	96%, 100% { opacity: 0; }
+}
+
+@keyframes hp-dot-1 {
+	0%, 12% { opacity: 0; }
+	14%, 86% { opacity: 1; }
+	96%, 100% { opacity: 0; }
+}
+
+@keyframes hp-dot-2 {
+	0%, 23% { opacity: 0; }
+	25%, 86% { opacity: 1; }
+	96%, 100% { opacity: 0; }
+}
+
+@keyframes hp-dot-3 {
+	0%, 34.5% { opacity: 0; }
+	36.5%, 86% { opacity: 1; }
+	96%, 100% { opacity: 0; }
+}
+
+@keyframes hp-peak {
+	0%, 55% { opacity: 0; }
+	60%, 86% { opacity: 1; }
+	96%, 100% { opacity: 0; }
 }
 
 @keyframes hp-pulse {
@@ -1277,6 +1326,8 @@ body:has(.hp-home--bleed) {
 	}
 
 	.hp-home .hp-chart__line { stroke-dashoffset: 0; }
+	.hp-home .hp-chart__dot,
+	.hp-home .hp-chart__peak { opacity: 1; }
 }
 
 /* =========================================================

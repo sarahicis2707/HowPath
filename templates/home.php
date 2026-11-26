@@ -24,7 +24,7 @@ $hp_contacto = home_url( '/contact/' );
 				</p>
 
 				<h1 class="hp-hero__title">
-					Impulsa tu <span class="hp-gradient-text">crecimiento digital</span> hoy
+					Impulsa tu <span class="hp-gradient-text">crecimiento digital</span>
 				</h1>
 
 				<p class="hp-hero__lead">
@@ -93,32 +93,24 @@ $hp_contacto = home_url( '/contact/' );
 									<stop offset="60%" stop-color="#FF5B2E" stop-opacity="0.07"></stop>
 									<stop offset="100%" stop-color="#FF5B2E" stop-opacity="0"></stop>
 								</linearGradient>
-								<marker id="hpArrow" viewBox="0 0 12 12" refX="8" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
-									<path d="M 0 1.5 L 10 6 L 0 10.5 z" fill="#FF5B2E"></path>
-								</marker>
 							</defs>
 							<rect width="100%" height="100%" fill="url(#hpInnerGrid)"></rect>
 							<line x1="20" y1="90" x2="500" y2="90" stroke="#1B2A47" stroke-width="1.5" stroke-dasharray="4 4"></line>
 							<text x="30" y="84" fill="#94A3B8" font-size="10" font-family="Inter, sans-serif">OBJETIVO COMERCIAL</text>
-							<path d="M 25 185 L 85 155 L 135 175 L 185 125 L 235 145 L 280 100 L 320 115 L 475 35 L 475 210 L 25 210 Z" fill="url(#hpOrangeArea)"></path>
-							<path class="hp-chart__line" d="M 25 185 L 85 155 L 135 175 L 185 125 L 235 145 L 280 100 L 320 115 L 475 35" stroke="#FF5B2E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#hpArrow)"></path>
-							<circle cx="85" cy="155" r="3.5" fill="#0A0E1A" stroke="#FF5B2E" stroke-width="2"></circle>
-							<circle cx="185" cy="125" r="3.5" fill="#0A0E1A" stroke="#FF5B2E" stroke-width="2"></circle>
-							<circle cx="280" cy="100" r="3.5" fill="#0A0E1A" stroke="#FF5B2E" stroke-width="2"></circle>
-							<circle class="hp-chart__pulse" cx="475" cy="35" r="9" fill="#FF5B2E" opacity="0.35"></circle>
-							<circle cx="475" cy="35" r="3.5" fill="#F5EFDF"></circle>
+							<path class="hp-chart__area" d="M 25 185 L 85 155 L 135 175 L 185 125 L 235 145 L 280 100 L 320 115 L 475 35 L 475 210 L 25 210 Z" fill="url(#hpOrangeArea)"></path>
+							<path class="hp-chart__line" pathLength="1" d="M 25 185 L 85 155 L 135 175 L 185 125 L 235 145 L 280 100 L 320 115 L 475 35" stroke="#FF5B2E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
+							<circle class="hp-chart__dot hp-chart__dot--1" cx="85" cy="155" r="3.5" fill="#0A0E1A" stroke="#FF5B2E" stroke-width="2"></circle>
+							<circle class="hp-chart__dot hp-chart__dot--2" cx="185" cy="125" r="3.5" fill="#0A0E1A" stroke="#FF5B2E" stroke-width="2"></circle>
+							<circle class="hp-chart__dot hp-chart__dot--3" cx="280" cy="100" r="3.5" fill="#0A0E1A" stroke="#FF5B2E" stroke-width="2"></circle>
+							<g class="hp-chart__peak">
+								<path d="M 463.3 29.8 L 483.9 30.4 L 472.5 47.6" fill="none" stroke="#FF5B2E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
+								<circle class="hp-chart__pulse" cx="475" cy="35" r="9" fill="#FF5B2E" opacity="0.35"></circle>
+								<circle cx="475" cy="35" r="3.5" fill="#F5EFDF"></circle>
+							</g>
 						</svg>
 						<div class="hp-chart__stages">
 							<span>Diagnóstico</span><span>Implementación</span><span>Captación</span><span>Optimización</span><span class="is-accent">Escala</span>
 						</div>
-					</div>
-
-					<div class="hp-panel__note">
-						<span class="hp-panel__note-icon"><?php echo howpath_icon( 'bolt' ); ?></span>
-						<span>
-							<strong>Prospectos sincronizados con el CRM</strong>
-							<span>Cada solicitud llega al asesor correcto, con su origen registrado.</span>
-						</span>
 					</div>
 				</div>
 
