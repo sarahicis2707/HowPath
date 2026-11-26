@@ -119,7 +119,15 @@ function howpath_apply_change_file( $file ) {
 
 	if ( $has_set_content ) {
 		if ( empty( $data['expect_sha256'] ) || ! hash_equals( (string) $data['expect_sha256'], hash( 'sha256', $content ) ) ) {
-			return howpath_change_result( 'error', 'El contenido actual de la página no es el esperado (alguien la editó). No se cambió nada.', $page_id );
+			return howpath_change_result(
+				'error',
+				sprintf(
+					'El contenido actual de la página no es el esperado (alguien la editó). No se cambió nada. Huella actual: %s, longitud: %d.',
+					substr( hash( 'sha256', $content ), 0, 12 ),
+					strlen( $content )
+				),
+				$page_id
+			);
 		}
 		$content = $data['set_content'];
 	}
