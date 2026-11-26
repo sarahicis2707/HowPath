@@ -2,7 +2,7 @@
 /**
  * Plugin Name: HowPath Page
  * Description: Aplica a las páginas de HowPath los cambios de contenido guardados en GitHub (carpeta content-changes) y muestra el shortcode [howpath_home].
- * Version: 0.4.0
+ * Version: 0.5.0
  * Author: HowPath
  */
 
@@ -14,6 +14,14 @@ define( 'HOWPATH_CHANGES_DIR', plugin_dir_path( __FILE__ ) . 'content-changes/' 
 define( 'HOWPATH_CHANGES_LOG', 'howpath_content_changes' );
 define( 'HOWPATH_CHANGES_LOCK', 'howpath_content_changes_lock' );
 define( 'HOWPATH_HOME_PAGE_ID', 23 );
+
+// Página de WordPress => shortcode del plugin que la dibuja.
+function howpath_page_shortcodes() {
+	return array(
+		23 => 'howpath_home',
+		24 => 'howpath_about',
+	);
+}
 
 require_once plugin_dir_path( __FILE__ ) . 'includes/icons.php';
 
@@ -210,22 +218,43 @@ function howpath_register_assets() {
 }
 add_action( 'wp_enqueue_scripts', 'howpath_register_assets' );
 
-// Vista previa solo para quien puede editar páginas: añade ?hp_preview=1 a la portada.
-function howpath_is_preview() {
-	return isset( $_GET['hp_preview'] ) && is_page( HOWPATH_HOME_PAGE_ID ) && current_user_can( 'edit_pages' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+// Vista previa solo para quien puede editar páginas: añade ?hp_preview=1 a la URL de la página.
+// Devuelve el shortcode que se debe mostrar, o una cadena vacía.
+function howpath_preview_shortcode() {
+	if ( ! isset( $_GET['hp_preview'] ) || ! current_user_can( 'edit_pages' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return '';
+	}
+	foreach ( howpath_page_shortcodes() as $page_id => $tag ) {
+		if ( is_page( $page_id ) ) {
+			return $tag;
+		}
+	}
+	return '';
 }
 
 function howpath_page_uses_home() {
 	if ( ! is_singular() ) {
 		return false;
 	}
+	if ( '' !== howpath_preview_shortcode() ) {
+		return true;
+	}
 	$post = get_post();
-	return howpath_is_preview() || ( $post && has_shortcode( $post->post_content, 'howpath_home' ) );
+	if ( ! $post ) {
+		return false;
+	}
+	foreach ( howpath_page_shortcodes() as $tag ) {
+		if ( has_shortcode( $post->post_content, $tag ) ) {
+			return true;
+		}
+	}
+	return false;
 }
 
 function howpath_preview_content( $content ) {
-	if ( howpath_is_preview() && in_the_loop() && is_main_query() ) {
-		return '[howpath_home]';
+	$tag = howpath_preview_shortcode();
+	if ( '' !== $tag && in_the_loop() && is_main_query() ) {
+		return '[' . $tag . ']';
 	}
 	return $content;
 }
@@ -238,3 +267,11 @@ function howpath_home_shortcode() {
 	return ob_get_clean();
 }
 add_shortcode( 'howpath_home', 'howpath_home_shortcode' );
+
+function howpath_about_shortcode() {
+	wp_enqueue_style( 'howpath-page' );
+	ob_start();
+	include plugin_dir_path( __FILE__ ) . 'templates/about.php';
+	return ob_get_clean();
+}
+add_shortcode( 'howpath_about', 'howpath_about_shortcode' );
