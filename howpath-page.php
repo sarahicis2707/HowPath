@@ -39,8 +39,9 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/icons.php';
  * }
  *
  * Para reemplazar todo el contenido de la página se usa "set_content" junto con
- * "expect_sha256": el contenido solo se sustituye si el actual coincide con esa
- * huella, así no se pisa una edición hecha después desde WordPress.
+ * "expect_modified" (fecha de última modificación, como "2026-11-10 18:54:08") o
+ * "expect_sha256": el contenido solo se sustituye si la página no cambió desde que
+ * se preparó el archivo, así no se pisa una edición hecha después desde WordPress.
  *
  * Cada archivo se aplica una sola vez, en orden alfabético. Antes de cambiar
  * nada se comprueba que cada texto a buscar aparezca exactamente "count" veces
@@ -118,13 +119,20 @@ function howpath_apply_change_file( $file ) {
 	$content = $post->post_content;
 
 	if ( $has_set_content ) {
-		if ( empty( $data['expect_sha256'] ) || ! hash_equals( (string) $data['expect_sha256'], hash( 'sha256', $content ) ) ) {
+		// Comprueba que nadie haya editado la página desde que se preparó el cambio:
+		// por fecha de última modificación (expect_modified) o por huella del contenido (expect_sha256).
+		if ( ! empty( $data['expect_modified'] ) ) {
+			$unchanged = ( (string) $data['expect_modified'] === $post->post_modified );
+		} else {
+			$unchanged = ! empty( $data['expect_sha256'] ) && hash_equals( (string) $data['expect_sha256'], hash( 'sha256', $content ) );
+		}
+
+		if ( ! $unchanged ) {
 			return howpath_change_result(
 				'error',
 				sprintf(
-					'El contenido actual de la página no es el esperado (alguien la editó). No se cambió nada. Huella actual: %s, longitud: %d.',
-					substr( hash( 'sha256', $content ), 0, 12 ),
-					strlen( $content )
+					'El contenido actual de la página no es el esperado (alguien la editó). No se cambió nada. Última modificación: %s.',
+					$post->post_modified
 				),
 				$page_id
 			);
@@ -182,6 +190,10 @@ function howpath_content_changes_notice() {
 		return;
 	}
 	foreach ( $log as $id => $entry ) {
+		// Solo avisa de cambios cuyo archivo sigue en el repositorio.
+		if ( ! file_exists( HOWPATH_CHANGES_DIR . $id . '.json' ) ) {
+			continue;
+		}
 		if ( isset( $entry['status'] ) && 'error' === $entry['status'] ) {
 			printf(
 				'<div class="notice notice-error"><p><strong>HowPath:</strong> el cambio <code>%s</code> no se aplicó. %s</p></div>',

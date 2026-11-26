@@ -1,6 +1,6 @@
 {
   "page_id": 24,
   "description": "Publica el nuevo diseño de Acerca de: la página 24 pasa a mostrar el shortcode [howpath_about]. La versión anterior con Spectra queda en las revisiones de WordPress.",
-  "expect_sha256": "97e1f51640208c62625ca42b221fe5a225829ee00435fd1cc7d8d321dd0b6fcd",
+  "expect_modified": "2026-11-10 18:54:08",
   "set_content": "<!-- wp:shortcode -->\n[howpath_about]\n<!-- /wp:shortcode -->"
 }
